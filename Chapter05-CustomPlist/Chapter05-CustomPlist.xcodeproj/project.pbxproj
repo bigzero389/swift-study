@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0D4633E026BA93EB00372680 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4633DF26BA93EB00372680 /* ListViewController.swift */; };
+		0DA00FB126BE4370004EE4A6 /* UserInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0DA00FB026BE4370004EE4A6 /* UserInfo.plist */; };
 		0DBA9DEA26B7E844008123E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA9DE926B7E844008123E7 /* AppDelegate.swift */; };
 		0DBA9DEC26B7E844008123E7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA9DEB26B7E844008123E7 /* SceneDelegate.swift */; };
 		0DBA9DEE26B7E844008123E7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA9DED26B7E844008123E7 /* ViewController.swift */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		0D4633DF26BA93EB00372680 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		0DA00FB026BE4370004EE4A6 /* UserInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = UserInfo.plist; sourceTree = "<group>"; };
 		0DBA9DE626B7E844008123E7 /* Chapter05-CustomPlist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chapter05-CustomPlist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DBA9DE926B7E844008123E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0DBA9DEB26B7E844008123E7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				0DBA9DF426B7E845008123E7 /* LaunchScreen.storyboard */,
 				0DBA9DF726B7E845008123E7 /* Info.plist */,
 				0D4633DF26BA93EB00372680 /* ListViewController.swift */,
+				0DA00FB026BE4370004EE4A6 /* UserInfo.plist */,
 			);
 			path = "Chapter05-CustomPlist";
 			sourceTree = "<group>";
@@ -131,6 +134,7 @@
 				0DBA9DF626B7E845008123E7 /* LaunchScreen.storyboard in Resources */,
 				0DBA9DF326B7E845008123E7 /* Assets.xcassets in Resources */,
 				0DBA9DF126B7E844008123E7 /* Main.storyboard in Resources */,
+				0DA00FB126BE4370004EE4A6 /* UserInfo.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
