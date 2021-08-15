@@ -21,8 +21,11 @@
 		0D47AE0C26C8BBFB00B91269 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D47AE0726C8BBFB00B91269 /* FMResultSet.m */; };
 		0D47AE0E26C8BF8600B91269 /* DepartmentListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D47AE0D26C8BF8600B91269 /* DepartmentListVC.swift */; };
 		0D47AE1026C8BFB300B91269 /* EmployeeListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D47AE0F26C8BFB300B91269 /* EmployeeListVC.swift */; };
-		0D47AE1226C8C32000B91269 /* hr.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 0D47AE1126C8C32000B91269 /* hr.sqlite */; };
 		0D47AE1426C8C37300B91269 /* DepartmentDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D47AE1326C8C37300B91269 /* DepartmentDAO.swift */; };
+		0DD0834926C8D0F80087E555 /* EmployeeDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD0834826C8D0F80087E555 /* EmployeeDAO.swift */; };
+		0DD0834B26C8F3280087E555 /* PickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD0834A26C8F3280087E555 /* PickerController.swift */; };
+		0DD0834D26C8FCFD0087E555 /* DepartmentInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD0834C26C8FCFD0087E555 /* DepartmentInfoVC.swift */; };
+		0DD0834F26C9069E0087E555 /* hr.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 0DD0834E26C9069E0087E555 /* hr.sqlite */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,8 +52,11 @@
 		0D47AE0726C8BBFB00B91269 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
 		0D47AE0D26C8BF8600B91269 /* DepartmentListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartmentListVC.swift; sourceTree = "<group>"; };
 		0D47AE0F26C8BFB300B91269 /* EmployeeListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeListVC.swift; sourceTree = "<group>"; };
-		0D47AE1126C8C32000B91269 /* hr.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hr.sqlite; sourceTree = "<group>"; };
 		0D47AE1326C8C37300B91269 /* DepartmentDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartmentDAO.swift; sourceTree = "<group>"; };
+		0DD0834826C8D0F80087E555 /* EmployeeDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeDAO.swift; sourceTree = "<group>"; };
+		0DD0834A26C8F3280087E555 /* PickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerController.swift; sourceTree = "<group>"; };
+		0DD0834C26C8FCFD0087E555 /* DepartmentInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartmentInfoVC.swift; sourceTree = "<group>"; };
+		0DD0834E26C9069E0087E555 /* hr.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = hr.sqlite; path = ../../../../DataGripProjects/datagrip_test/hr.sqlite; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +91,7 @@
 		0D47ADE026C8B89300B91269 /* Chapter06-HR */ = {
 			isa = PBXGroup;
 			children = (
+				0DD0834E26C9069E0087E555 /* hr.sqlite */,
 				0D47AE0026C8BBFA00B91269 /* FMDatabase.h */,
 				0D47AE0326C8BBFB00B91269 /* FMDatabase.m */,
 				0D47AE0126C8BBFA00B91269 /* FMDatabaseAdditions.h */,
@@ -106,8 +113,10 @@
 				0D47ADFA26C8B9B800B91269 /* Bridging-Header.h */,
 				0D47AE0D26C8BF8600B91269 /* DepartmentListVC.swift */,
 				0D47AE0F26C8BFB300B91269 /* EmployeeListVC.swift */,
-				0D47AE1126C8C32000B91269 /* hr.sqlite */,
 				0D47AE1326C8C37300B91269 /* DepartmentDAO.swift */,
+				0DD0834826C8D0F80087E555 /* EmployeeDAO.swift */,
+				0DD0834A26C8F3280087E555 /* PickerController.swift */,
+				0DD0834C26C8FCFD0087E555 /* DepartmentInfoVC.swift */,
 			);
 			path = "Chapter06-HR";
 			sourceTree = "<group>";
@@ -180,8 +189,8 @@
 			files = (
 				0D47ADEE26C8B89300B91269 /* LaunchScreen.storyboard in Resources */,
 				0D47ADEB26C8B89300B91269 /* Assets.xcassets in Resources */,
+				0DD0834F26C9069E0087E555 /* hr.sqlite in Resources */,
 				0D47ADE926C8B89300B91269 /* Main.storyboard in Resources */,
-				0D47AE1226C8C32000B91269 /* hr.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,8 +201,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DD0834926C8D0F80087E555 /* EmployeeDAO.swift in Sources */,
 				0D47ADE626C8B89300B91269 /* ViewController.swift in Sources */,
+				0DD0834B26C8F3280087E555 /* PickerController.swift in Sources */,
 				0D47AE0E26C8BF8600B91269 /* DepartmentListVC.swift in Sources */,
+				0DD0834D26C8FCFD0087E555 /* DepartmentInfoVC.swift in Sources */,
 				0D47AE1426C8C37300B91269 /* DepartmentDAO.swift in Sources */,
 				0D47AE1026C8BFB300B91269 /* EmployeeListVC.swift in Sources */,
 				0D47AE0826C8BBFB00B91269 /* FMDatabaseQueue.m in Sources */,
