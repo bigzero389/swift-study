@@ -81,6 +81,11 @@ class MemoListVC: UITableViewController {
     // 3. 기타 상황으로 뷰 컨트롤러가 스크린에 표시될 때
     // viewWillAppear -> 뷰컨트롤러가 화면에 표시됨 -> viewDidAppear
     override func viewWillAppear(_ animated: Bool) {
+        let ud = UserDefaults.standard
+        if ud.bool(forKey: UserInfoKey.tutorial) == false {
+            let vc = self.instanceTutorialVC(name: "MasterVC")
+            self.present(vc!, animated: false)
+        }
         self.tableView.reloadData()
     }
     
@@ -94,5 +99,10 @@ class MemoListVC: UITableViewController {
         vc.param = row
         self.navigationController?.pushViewController(vc, animated: true)
     }
-
+    
+    @IBAction func initValue(_ sender: Any) {
+        for keyName in UserDefaults.standard.dictionaryRepresentation().keys {
+            UserDefaults.standard.removeObject(forKey: keyName)
+        }
+    }
 }

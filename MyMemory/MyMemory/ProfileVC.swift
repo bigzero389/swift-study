@@ -6,7 +6,8 @@
 //
 
 import UIKit
-class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    let uInfo = UserInfoManager()
     let profileImage = UIImageView()
     let tv = UITableView()
     
@@ -15,7 +16,8 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.navigationItem.title = "프로필"
         let backBtn = UIBarButtonItem(title: "닫기", style: .plain, target: self, action: #selector(close(_:)))
         
-        let image = UIImage(named: "account.jpg")
+//        let image = UIImage(named: "account.jpg")
+        let image = self.uInfo.profile
         
         self.profileImage.image = image
         self.profileImage.frame.size = CGSize(width: 100, height: 100)
@@ -49,6 +51,12 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.view.bringSubviewToFront(self.profileImage)
         
         self.navigationController?.navigationBar.isHidden = true
+        
+        self.drawBtn()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(profile(_:)))
+        self.profileImage.addGestureRecognizer(tap)
+        self.profileImage.isUserInteractionEnabled = true
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -64,18 +72,140 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         switch indexPath.row {
         case 0 :
             cell.textLabel?.text = "이름"
-            cell.detailTextLabel?.text = "bigzero"
+            cell.detailTextLabel?.text = self.uInfo.name ?? "로그인 하세요"
         case 1 :
             cell.textLabel?.text = "계정"
-            cell.detailTextLabel?.text = "bigzero@outlook.kr"
+            cell.detailTextLabel?.text = self.uInfo.account ?? "로그인 하세요"
         default :
             ()
         }
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if self.uInfo.isLogin == false {
+            self.doLogin(self.tv)
+        }
+    }
+    
     @objc func close(_ sender: Any) {
         self.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func doLogin(_ sender: Any) {
+        let loginAlert = UIAlertController(title: "LOGIN", message: nil, preferredStyle: .alert)
+        
+        loginAlert.addTextField() { (tf) in
+            tf.placeholder = "ex) bigzero@outlook.kr"
+        }
+        loginAlert.addTextField() { (tf) in
+            tf.placeholder = "ex) 1234"
+            tf.isSecureTextEntry = true
+        }
+        
+        loginAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        loginAlert.addAction(UIAlertAction(title: "Login", style: .destructive, handler: {(_) in
+            let account = loginAlert.textFields?[0].text ?? ""
+            let passwd = loginAlert.textFields?[1].text ?? ""
+            
+            if self.uInfo.login(account: account, passwd: passwd) {
+                // 성공시
+                self.tv.reloadData()
+                self.profileImage.image = self.uInfo.profile
+                if self.uInfo.login(account: account, passwd: passwd) == true {
+                    self.drawBtn()
+                }
+            } else {
+                let alert = UIAlertController(title: nil, message: "로그인에 실패했습니다.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                self.present(alert, animated: false)
+            }
+        }))
+        self.present(loginAlert, animated: false)
+    }
+    
+    @objc func doLogout(_ sender: Any) {
+        let alert = UIAlertController(title: nil, message: "로그아웃 하시겠습니까?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "확인", style: .destructive, handler: {(_) in
+            // 로그아웃시
+            self.tv.reloadData()
+            self.profileImage.image = self.uInfo.profile
+            self.uInfo.logout()
+            self.drawBtn()
+        }))
+        self.present(alert, animated: false)
+    }
+    
+    func drawBtn() {
+        let v = UIView()
+        v.frame.size.width = self.view.frame.width
+        v.frame.size.height = 40
+        v.frame.origin.x = 0
+        v.frame.origin.y = self.tv.frame.origin.y + self.tv.frame.height
+        v.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.0)
+        
+        self.view.addSubview(v)
+        
+        let btn = UIButton(type: .system)
+        btn.frame.size.width = 100
+        btn.frame.size.height = 30
+        btn.center.x = v.frame.size.width / 2
+        btn.center.y = v.frame.size.height / 2
+        
+        if self.uInfo.isLogin == true {
+            btn.setTitle("로그아웃", for: .normal)
+            btn.addTarget(self, action: #selector(doLogout(_:)), for: .touchUpInside)
+        } else {
+            btn.setTitle("로그인", for: .normal)
+            btn.addTarget(self, action: #selector(doLogin(_:)), for: .touchUpInside)
+        }
+        v.addSubview(btn)
+        
+    }
+    
+    func imgPicker(_ source: UIImagePickerController.SourceType) {
+        let picker = UIImagePickerController()
+        picker.sourceType = source
+        picker.delegate = self
+        picker.allowsEditing = true
+        self.present(picker, animated: true)
+    }
+    
+    @objc func profile(_ sender: UIButton) {
+        guard self.uInfo.account != nil else {
+            self.doLogin(self)
+            return
+        }
+        // 카메라 사용가능시
+        let alert = UIAlertController(title: nil, message: "사진을 가져올 곳을 선택해 주세요", preferredStyle: .actionSheet)
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (_) in
+                self.imgPicker(.camera)
+            }))
+        }
+        // 저장된 앨범 사용가능시
+        if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
+            alert.addAction(UIAlertAction(title: "저장된 앨범", style: .default, handler: { (_) in
+                self.imgPicker(.savedPhotosAlbum)
+            }))
+        }
+        // 포토 라이브러리를 사용할 수 있으면
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            alert.addAction(UIAlertAction(title: "포토 라이브러리", style: .default, handler: { (_) in
+                self.imgPicker(.photoLibrary)
+            }))
+        }
+        // 취소버튼
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        self.present(alert, animated: true)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            self.uInfo.profile = img
+            self.profileImage.image = img
+        }
     }
     
 }
