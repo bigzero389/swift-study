@@ -13,6 +13,7 @@ class MemoFormVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     @IBOutlet var preview: UIImageView!
     
     var subject: String!
+    lazy var dao = MemoDAO()
     
     override func viewDidLoad() {
         self.contents.delegate = self
@@ -53,15 +54,17 @@ class MemoFormVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         data.image = self.preview.image
         data.regdate = Date()
         
-        // 전역변수 리스트에 메모 데이터 추가
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.memolist.append(data)
+        // 전역변수 리스트에 메모 데이터 추가 => 코어데이터를 사용하면서 중복코드 주석처리
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        appDelegate.memolist.append(data)
+
+        // 추가코드) 코어데이터에 메모 데이터를 추가한다.
+        dao.insert(data)
         
         //주의 : 클래스는 call by reference, 구조체는 call by value 이다. memolist는 구조체이므로 아래처럼 하면 전역으로 사용할 수 없다.
 //        var mlist = appDelegate.memolist
 //        mlist.append(data)
-        
-        
+
         // 작성화면을 종료하고 이전화면으로 돌아간다.
         _ = self.navigationController?.popViewController(animated: true)
     }

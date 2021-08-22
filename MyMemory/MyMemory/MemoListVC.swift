@@ -7,11 +7,16 @@
 
 import UIKit
 
-class MemoListVC: UITableViewController {
-
+class MemoListVC: UITableViewController, UISearchBarDelegate {
+    lazy var dao = MemoDAO()
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
+    @IBOutlet var searchBar: UISearchBar!
+    
     override func viewDidLoad() {
+        // 검색 바의 키보드에서 리턴 키가 항상 활성화 되어 있도록 처리
+        searchBar.enablesReturnKeyAutomatically = false
+
         let memo = MemoData()
         memo.title = "워크샵 준비 물품들"
         memo.contents = "라면, 양파, 감자, 파, 계란, 세제류, 생수, 탄산수, 워셔액, 비누, 치약, 칫솔, 수건, 라면, 양파, 감자, 파, 계란, 세제류, 생수, 탄산수, 워셔액, 비누, 치약, 칫솔, 수건"
@@ -37,9 +42,9 @@ class MemoListVC: UITableViewController {
         memo3.title = "워크샵 결과 정리"
         memo3.contents = "부족했던 점 : 워크샵 장소 이동 사이에 간격이 너무 길어 사람들의 주의가 분산됨"
         memo3.regdate = Date(timeIntervalSinceNow: 8000)
-        
+
         appDelegate.memolist.append(memo3)
-        
+
         if let revealVC = self.revealViewController() {
             let btn = UIBarButtonItem()
             btn.image = UIImage(named: "sidemenu.png")
@@ -48,14 +53,34 @@ class MemoListVC: UITableViewController {
             self.navigationItem.leftBarButtonItem = btn
             self.view.addGestureRecognizer(revealVC.panGestureRecognizer())
         }
-            
     }
-    
+
+    // 해당 뷰 컨트롤러가 디바이스의 스크린에 출력될 때마다 호출된다.
+    // 1. 다른 화면으로 이동했다가 다시 돌아온 경우
+    // 2. 홈버튼을 눌러 앱이 백그라운드 모드로 내려갔다가 다시 활성화 되었을 때
+    // 3. 기타 상황으로 뷰 컨트롤러가 스크린에 표시될 때
+    // viewWillAppear -> 뷰컨트롤러가 화면에 표시됨 -> viewDidAppear
+    override func viewWillAppear(_ animated: Bool) {
+        let ud = UserDefaults.standard
+        if ud.bool(forKey: UserInfoKey.tutorial) == false {
+            let vc = self.instanceTutorialVC(name: "MasterVC")
+            self.present(vc!, animated: false)
+        }
+        appDelegate.memolist = dao.fetch()
+        self.tableView.reloadData()
+    }
+
+    @IBAction func initValue(_ sender: Any) {
+        for keyName in UserDefaults.standard.dictionaryRepresentation().keys {
+            UserDefaults.standard.removeObject(forKey: keyName)
+        }
+    }
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = self.appDelegate.memolist.count
         return count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // 1. memolist 배열 데이터에서 주어진 행에 맞는 데이터를 꺼낸다.
         let row = self.appDelegate.memolist[indexPath.row]
@@ -74,35 +99,36 @@ class MemoListVC: UITableViewController {
         // 6. cell 객체리턴
         return cell
     }
-    
-    // 해당 뷰 컨트롤러가 디바이스의 스크린에 출력될 때마다 호출된다.
-    // 1. 다른 화면으로 이동했다가 다시 돌아온 경우
-    // 2. 홈버튼을 눌러 앱이 백그라운드 모드로 내려갔다가 다시 활성화 되었을 때
-    // 3. 기타 상황으로 뷰 컨트롤러가 스크린에 표시될 때
-    // viewWillAppear -> 뷰컨트롤러가 화면에 표시됨 -> viewDidAppear
-    override func viewWillAppear(_ animated: Bool) {
-        let ud = UserDefaults.standard
-        if ud.bool(forKey: UserInfoKey.tutorial) == false {
-            let vc = self.instanceTutorialVC(name: "MasterVC")
-            self.present(vc!, animated: false)
-        }
-        self.tableView.reloadData()
-    }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = self.appDelegate.memolist[indexPath.row]
-        
+
         guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "MemoRead") as? MemoReadVC else {
             return
         }
-        
+
         vc.param = row
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
-    @IBAction func initValue(_ sender: Any) {
-        for keyName in UserDefaults.standard.dictionaryRepresentation().keys {
-            UserDefaults.standard.removeObject(forKey: keyName)
+
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        .delete
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let data = appDelegate.memolist[indexPath.row]
+
+        // 코어데이터에서 삭제한 다음, 배열 내 데이터 및 테이블 뷰 행을 차ㅖ로 삭제한다.
+        if dao.delete(data.objectID!) {
+            appDelegate.memolist.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let keyword = searchBar.text
+
+        appDelegate.memolist = dao.fetch(keyword: keyword)
+        tableView.reloadData()
     }
 }

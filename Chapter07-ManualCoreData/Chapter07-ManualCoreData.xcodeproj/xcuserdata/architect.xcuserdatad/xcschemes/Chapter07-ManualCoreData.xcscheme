@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   version = "1.3">
+   <BuildAction>
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForRunning = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9CB2D85D84A0CADBD84A1CB6"
+               BuildableName = "Chapter07-ManualCoreData.app"
+               BlueprintName = "Chapter07-ManualCoreData"
+               ReferencedContainer = "container:Chapter07-ManualCoreData.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <LaunchAction
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Debug"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "9CB2D85D84A0CADBD84A1CB6"
+            BuildableName = "Chapter07-ManualCoreData.app"
+            BlueprintName = "Chapter07-ManualCoreData"
+            ReferencedContainer = "container:Chapter07-ManualCoreData.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </LaunchAction>
+</Scheme>
