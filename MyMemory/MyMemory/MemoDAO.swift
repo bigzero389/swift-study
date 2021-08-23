@@ -65,6 +65,16 @@ class MemoDAO {
         // 3. 영구 저장소에 변경 사항을 반영한다.
         do {
             try context.save()
+            let tk = TokenUtils()
+            if tk.getAuthorizationHeader() != nil {
+                DispatchQueue.global(qos: .background).async {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                    let sync = DataSync()
+                    sync.uploadDatum(object) {
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    }
+                }
+            }
         } catch let e as NSError {
             NSLog("An error has occured : %s", e.localizedDescription)
         }
